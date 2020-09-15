@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # 作者：Dr.叶子
 # 创作日期：2020年9月12日
+# github地址：https://github.com/chengyun427/Proxy_pool
 
 # kuaidaili.py文件解释：
 # 这是一个爬虫文件，具体生成步骤如下：
@@ -41,7 +42,9 @@ class KuaidailiSpider(scrapy.Spider):
             position_operator = list_td.xpath("./td[@data-title='位置']/text()").extract_first()
             item['position'] = position_operator.rsplit(' ', 1)[0]
             item['operator'] = position_operator.rsplit(' ')[-1]
-            item['speed'] = list_td.xpath("./td[@data-title='响应速度']/text()").extract_first()
+            # 1.1.4 处理“秒”字
+            speed = list_td.xpath("./td[@data-title='响应速度']/text()").extract_first()
+            item['speed'] = speed.rsplit('秒', 1)[0]
             item['last_time'] = list_td.xpath("./td[@data-title='最后验证时间']/text()").extract_first()
             # 1.1.4 传递到管道
             yield item
